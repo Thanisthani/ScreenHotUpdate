@@ -2,7 +2,7 @@
   "ver": "1.0.27",
   "importer": "image",
   "imported": true,
-  "uuid": "9e1634b8-c33b-4ec5-87fa-956fcdab3cc4",
+  "uuid": "22a22708-11d9-4581-8564-751935cdd74c",
   "files": [
     ".json",
     ".png"
@@ -10,14 +10,14 @@
   "subMetas": {
     "6c48a": {
       "importer": "texture",
-      "uuid": "9e1634b8-c33b-4ec5-87fa-956fcdab3cc4@6c48a",
-      "displayName": "car-icon-tank",
+      "uuid": "22a22708-11d9-4581-8564-751935cdd74c@6c48a",
+      "displayName": "car-icon-quadbike",
       "id": "6c48a",
       "name": "texture",
       "userData": {
         "wrapModeS": "clamp-to-edge",
         "wrapModeT": "clamp-to-edge",
-        "imageUuidOrDatabaseUri": "9e1634b8-c33b-4ec5-87fa-956fcdab3cc4",
+        "imageUuidOrDatabaseUri": "22a22708-11d9-4581-8564-751935cdd74c",
         "isUuid": true,
         "visible": false,
         "minfilter": "linear",
@@ -34,8 +34,8 @@
     },
     "f9941": {
       "importer": "sprite-frame",
-      "uuid": "9e1634b8-c33b-4ec5-87fa-956fcdab3cc4@f9941",
-      "displayName": "car-icon-tank",
+      "uuid": "22a22708-11d9-4581-8564-751935cdd74c@f9941",
+      "displayName": "car-icon-quadbike",
       "id": "f9941",
       "name": "spriteFrame",
       "userData": {
@@ -113,7 +113,7 @@
           ]
         },
         "isUuid": true,
-        "imageUuidOrDatabaseUri": "9e1634b8-c33b-4ec5-87fa-956fcdab3cc4@6c48a",
+        "imageUuidOrDatabaseUri": "22a22708-11d9-4581-8564-751935cdd74c@6c48a",
         "atlasUuid": "",
         "trimType": "auto"
       },
@@ -129,6 +129,6 @@
     "type": "sprite-frame",
     "hasAlpha": false,
     "fixAlphaTransparencyArtifacts": false,
-    "redirect": "9e1634b8-c33b-4ec5-87fa-956fcdab3cc4@6c48a"
+    "redirect": "22a22708-11d9-4581-8564-751935cdd74c@6c48a"
   }
 }

@@ -1,0 +1,7 @@
+{
+  "packageUrl": "https://thanisthani.github.io/CocosHotUpdate/remote-assets/",
+  "remoteVersionUrl": "https://thanisthani.github.io/CocosHotUpdate/remote-assets/version.manifest",
+  "remoteManifestUrl": "https://thanisthani.github.io/CocosHotUpdate/remote-assets/project.manifest",
+  "version": "1.0.1",
+  "engineVersion": "3.0.0"
+}
