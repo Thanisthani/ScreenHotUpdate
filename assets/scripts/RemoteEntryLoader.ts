@@ -53,7 +53,7 @@ export class RemoteEntryLoader extends Component {
         
         this.initHotUpdate();
         this.setupUI();
-        this.checkForPendingUpdate();
+        // this.checkForPendingUpdate();
     }
 
     private checkForPendingUpdate(): void {
@@ -77,7 +77,7 @@ export class RemoteEntryLoader extends Component {
             console.log('Applying hot update from:', hotUpdatePath);
             
             // 1. Clear all cached assets first
-            this.clearAssetCache();
+            // this.clearAssetCache();
             
             // 2. Update search paths to prioritize hot update directory
             this.updateSearchPaths(hotUpdatePath);
@@ -138,15 +138,19 @@ export class RemoteEntryLoader extends Component {
         console.log('Reloading updated assets...');
         
         // Method 1: Reload main bundle
-        this.reloadMainBundle();
+     
+
+        this.scheduleOnce(() => {
+            this.reloadMainBundle();
+        }, 30);
         
         // Method 2: Reload specific updated assets (if you know which ones)
         // this.reloadSpecificAssets();
         
         // Method 3: Force reload current scene after a delay
-        this.scheduleOnce(() => {
-            this.reloadCurrentScene();
-        }, 1.0);
+        // this.scheduleOnce(() => {
+        //     this.reloadCurrentScene();
+        // }, 30);
     }
 
     private reloadMainBundle(): void {
@@ -404,7 +408,7 @@ export class RemoteEntryLoader extends Component {
         sys.localStorage.setItem('hotUpdateReady', 'true');
         sys.localStorage.setItem('hotUpdatePath', this.storagePath);
 
-        this.onUpdateFinished(true, false); // Don't need restart since we applied immediately
+        // this.onUpdateFinished(true, true); // Don't need restart since we applied immediately
     }
 
     private handleUpdateProgress(event: any): void {
