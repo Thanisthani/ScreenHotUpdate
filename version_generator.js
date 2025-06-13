@@ -1,3 +1,4 @@
+// 
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
@@ -52,7 +53,10 @@ function getAllFiles(dir, fileList = []) {
         if (stat.isDirectory()) {
             getAllFiles(filePath, fileList);
         } else {
-            fileList.push(filePath);
+            // Skip manifest files to avoid conflicts
+            if (!file.endsWith('.manifest')) {
+                fileList.push(filePath);
+            }
         }
     });
     
@@ -63,7 +67,6 @@ function getAllFiles(dir, fileList = []) {
 function generateProjectManifest() {
     const files = getAllFiles(sourceDir);
     const assets = {};
-    const searchPaths = [];
     
     files.forEach(file => {
         const relativePath = path.relative(sourceDir, file).replace(/\\/g, '/');
@@ -72,9 +75,19 @@ function generateProjectManifest() {
         
         assets[relativePath] = {
             md5: md5,
-            size: size
+            size: size,
+            compressed: false, // Set to true if you're using compression
+            // path: relativePath
         };
     });
+    
+    // Important: Include search paths for proper asset loading
+    const searchPaths = [
+        '', // Current directory (hot update directory)
+        'assets/', // Assets directory
+        'src/', // Source directory
+        'jsb-adapter/' // JSB adapter directory
+    ];
     
     const manifest = {
         packageUrl: baseUrl,
@@ -82,13 +95,18 @@ function generateProjectManifest() {
         remoteManifestUrl: baseUrl + 'project.manifest',
         version: version,
         assets: assets,
-        searchPaths: searchPaths
+        searchPaths: []
     };
     
-    fs.writeFileSync(
-        path.join(destDir, 'project.manifest'),
-        JSON.stringify(manifest, null, 2)
-    );
+    // Write manifest with proper formatting
+    const manifestContent = JSON.stringify(manifest, null, 2);
+    fs.writeFileSync(path.join(destDir, 'project.manifest'), manifestContent);
+    
+    console.log(`Generated project.manifest with ${Object.keys(assets).length} assets`);
+    console.log('Assets included:');
+    Object.keys(assets).forEach(assetPath => {
+        console.log(`  - ${assetPath} (${formatBytes(assets[assetPath].size)})`);
+    });
 }
 
 // Generate version.manifest
@@ -98,21 +116,73 @@ function generateVersionManifest() {
         remoteVersionUrl: baseUrl + 'version.manifest',
         remoteManifestUrl: baseUrl + 'project.manifest',
         version: version,
-        engineVersion: '3.0.0'  // Update this to match your Cocos Creator version
+        engineVersion: '3.8.0' // Update to match your Cocos Creator version
     };
     
-    fs.writeFileSync(
-        path.join(destDir, 'version.manifest'),
-        JSON.stringify(manifest, null, 2)
-    );
+    const manifestContent = JSON.stringify(manifest, null, 2);
+    fs.writeFileSync(path.join(destDir, 'version.manifest'), manifestContent);
+    
+    console.log('Generated version.manifest');
 }
 
-// Generate both manifests
-generateProjectManifest();
-generateVersionManifest();
+// Helper function to format bytes
+function formatBytes(bytes) {
+    if (bytes === 0) return '0 B';
+    const k = 1024;
+    const sizes = ['B', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}
 
-console.log('Manifest files generated successfully!');
-console.log('Version:', version);
-console.log('URL:', baseUrl);
-console.log('Source directory:', sourceDir);
-console.log('Destination directory:', destDir);
+// Validate source directory structure
+function validateSourceStructure() {
+    const requiredPaths = [
+        path.join(sourceDir, 'main.js'),
+        path.join(sourceDir, 'assets'),
+        path.join(sourceDir, 'src')
+    ];
+    
+    const missingPaths = requiredPaths.filter(p => !fs.existsSync(p));
+    
+    if (missingPaths.length > 0) {
+        console.warn('Warning: Some expected files/directories are missing:');
+        missingPaths.forEach(p => console.warn(`  - ${path.relative(sourceDir, p)}`));
+    }
+}
+
+// Create destination directory if it doesn't exist
+function ensureDestinationDir() {
+    if (!fs.existsSync(destDir)) {
+        fs.mkdirSync(destDir, { recursive: true });
+        console.log(`Created destination directory: ${destDir}`);
+    }
+}
+
+// Main execution
+try {
+    console.log('=== Hot Update Manifest Generator ===');
+    console.log('Version:', version);
+    console.log('Base URL:', baseUrl);
+    console.log('Source directory:', sourceDir);
+    console.log('Destination directory:', destDir);
+    console.log('');
+    
+    validateSourceStructure();
+    ensureDestinationDir();
+    
+    // Generate both manifests
+    generateProjectManifest();
+    generateVersionManifest();
+    
+    console.log('');
+    console.log('✅ Manifest files generated successfully!');
+    console.log('');
+    console.log('Next steps:');
+    console.log('1. Upload all files to your server');
+    console.log('2. Ensure the manifest URL in your app points to the correct location');
+    console.log('3. Test the hot update functionality');
+    
+} catch (error) {
+    console.error('❌ Error generating manifest files:', error.message);
+    process.exit(1);
+}
