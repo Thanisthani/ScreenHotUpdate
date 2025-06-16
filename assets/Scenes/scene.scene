@@ -1415,7 +1415,7 @@
       "a": 255
     },
     "_spriteFrame": {
-      "__uuid__": "22a22708-11d9-4581-8564-751935cdd74c@f9941",
+      "__uuid__": "1a8f5957-2663-4094-b362-c0e8a33bdb10@f9941",
       "__expectedType__": "cc.SpriteFrame"
     },
     "_type": 0,
@@ -1496,7 +1496,7 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 606.9291857367947,
+      "width": 195.67022316739192,
       "height": 50.400000000000006
     },
     "_anchorPoint": {
@@ -1526,7 +1526,7 @@
       "b": 255,
       "a": 255
     },
-    "_string": "Hot updated working version 1.0.4",
+    "_string": "Hot update",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
     "_actualFontSize": 46.277777777777786,

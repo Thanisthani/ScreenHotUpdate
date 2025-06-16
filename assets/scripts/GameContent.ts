@@ -9,10 +9,7 @@ export class GameContent extends Component {
 
     onLoad() {
       
-        console.log("onLoad is called version 1.0.3")
-        if (this.label) {
-            this.label.string = "Inital one ";
-        }
+        console.log("onLoad is called updated ")
     }
 }
 
